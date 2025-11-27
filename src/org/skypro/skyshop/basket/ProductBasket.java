@@ -1,46 +1,73 @@
 package org.skypro.skyshop.basket;
 
 import org.skypro.skyshop.product.Product;
-import java.util.ArrayList;
-import java.util.List;
 
 public class ProductBasket {
-    private List<Product> products;
-
-    public ProductBasket() {
-        products = new ArrayList<>();
-    }
+    private Product[] products = new Product[]{null, null, null, null, null};
 
     public void addToCart(Product product) {
-        products.add(product);
+        boolean cartIsFull = true;
+        for (int i = 0; i < products.length; i++) {
+            if (products[i] == null) {
+                cartIsFull = false;
+            }
+        } if (!cartIsFull) {
+            for (int i = 0; i < products.length; i++) {
+                if (products[i] == null) {
+                    products[i] = product;
+                    break;
+                }
+            }
+        } if (cartIsFull) {
+            System.out.println("Невозможно добавить продукт");
+        }
     }
 
     public int totalPrice() {
         int total = 0;
         for (Product p: products) {
-            total += p.getPrice();
+            if (p != null) {
+                total += p.getPrice();
+            }
         }
         return total;
     }
 
     public void showCart() {
-        if (products.isEmpty()) {
-            System.out.println("Корзина пуста");
+        boolean cartIsEmpty = true;
+        for (int i = 0; i < products.length; i++) {
+            if (products[i] != null) {
+                cartIsEmpty = false;
+                break;
+            }
         }
-        else {
+        if (!cartIsEmpty) {
             System.out.println("Список товаров в корзине:");
             for (Product p : products) {
-                System.out.println(p.toString());
+                if (p != null) {
+                    System.out.println(p.toString());
+                } else continue;
             }
-            System.out.println("Итого в корзине: " + totalPrice());
+            System.out.println("Итого в корзине: " + totalPrice() + " руб.");
+        } else {
+            System.out.println("Корзина пуста");
         }
     }
 
-    public boolean checkProduct(Product product) {
-        return products.contains(product);
+    public boolean checkProduct(String title) {
+        for (int i = 0; i < products.length; i++) {
+            if (products[i] != null) {
+                if (products[i].getTitle() == title) return true;
+            }
+        }
+        return false;
     }
 
     public void cleanBasket() {
-        products.clear();
+        for (int i = 0; i < products.length; i++) {
+            if (products[i] != null) {
+                products[i] = null;
+            }
+        }
     }
 }

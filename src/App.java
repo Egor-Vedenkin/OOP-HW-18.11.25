@@ -14,11 +14,14 @@ public class App {
         basket.addToCart(product1);
         basket.addToCart(product2);
         basket.addToCart(product3);
+        basket.addToCart(product4);
+        basket.addToCart(product1);
+        basket.addToCart(product2);
 
         basket.showCart();
 
-        System.out.println(basket.checkProduct(product4));
-        System.out.println(basket.checkProduct(product1));
+        System.out.println(basket.checkProduct("Телефон"));
+        System.out.println(basket.checkProduct("Планшет"));
 
         basket.cleanBasket();
 
@@ -26,6 +29,8 @@ public class App {
 
         System.out.println(basket.totalPrice());
 
-        System.out.println(basket.checkProduct(product1));
+        System.out.println(basket.checkProduct("Телефон"));
+
+        basket.showCart();
     }
 }

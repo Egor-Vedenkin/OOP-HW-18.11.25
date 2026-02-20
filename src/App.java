@@ -1,14 +1,15 @@
 import org.skypro.skyshop.product.Product;
 import org.skypro.skyshop.basket.ProductBasket;
+import org.skypro.skyshop.product.SimpleProduct;
 
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class App {
     public static void main(String[] args) {
-        Product product1 = new Product("Телефон", 3000);
-        Product product2 = new Product("Планшет", 5000);
-        Product product3 = new Product("Ноутбук", 10000);
-        Product product4 = new Product("Телевизор", 12500);
+        SimpleProduct product1 = new SimpleProduct("Телефон", 3000);
+        SimpleProduct product2 = new SimpleProduct("Планшет", 5000);
+        SimpleProduct product3 = new SimpleProduct("Ноутбук", 10000);
+        SimpleProduct product4 = new SimpleProduct("Телевизор", 12500);
 
         ProductBasket basket = new ProductBasket();
         basket.addToCart(product1);

@@ -1,24 +1,20 @@
 package org.skypro.skyshop.product;
 
-public class Product {
+public abstract class Product {
     private String title;
-    private int price;
 
     public String toString() {
-        return this.title + " " + this.price + " руб";
+        return this.title;
     }
 
     public Product(String title, int price) {
         this.title = title;
-        this.price = price;
     }
 
     public String getTitle() {
         return title;
     }
 
-    public int getPrice() {
-        return price;
-    }
+    public abstract int getPrice();
 
 }

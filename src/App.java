@@ -13,6 +13,7 @@ public class App {
         DiscountedProduct discountedPhone = new DiscountedProduct("Телефончик", 3000);
         FixPriceProduct fixedNotebook = new FixPriceProduct("Фиксированный ноутбук");
         SimpleProduct simpleTablet = new SimpleProduct("Обычный планшет", 5000);
+        SimpleProduct simpleLaptop = new SimpleProduct("Обычный ноутбук", 6000);
 
         ProductBasket basket = new ProductBasket();
         basket.addToCart(discountedPhone);

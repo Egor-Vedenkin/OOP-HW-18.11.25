@@ -3,7 +3,7 @@ package org.skypro.skyshop.basket;
 import org.skypro.skyshop.product.Product;
 
 public class ProductBasket {
-    private Product[] products = new Product[]{null, null, null, null, null};
+    private Product[] products = new Product[5];
 
     public void addToCart(Product product) {
         boolean cartIsFull = true;
@@ -11,21 +11,22 @@ public class ProductBasket {
             if (products[i] == null) {
                 cartIsFull = false;
             }
-        } if (!cartIsFull) {
+        }
+        if (!cartIsFull) {
             for (int i = 0; i < products.length; i++) {
                 if (products[i] == null) {
                     products[i] = product;
                     break;
                 }
             }
-        } if (cartIsFull) {
+        } else {
             System.out.println("Невозможно добавить продукт");
         }
     }
 
     public int totalPrice() {
         int total = 0;
-        for (Product p: products) {
+        for (Product p : products) {
             if (p != null) {
                 total += p.getPrice();
             }
@@ -46,18 +47,28 @@ public class ProductBasket {
             for (Product p : products) {
                 if (p != null) {
                     System.out.println(p.toString());
-                } else continue;
+                }
             }
+
+            // Подсчет специальных товаров
+            int specialCount = 0;
+            for (Product p : products) {
+                if (p != null && p.isSpecial()) {
+                    specialCount++;
+                }
+            }
+
             System.out.println("Итого в корзине: " + totalPrice() + " руб.");
+            System.out.println("Специальных товаров: " + specialCount);
         } else {
             System.out.println("Корзина пуста");
         }
     }
 
     public boolean checkProduct(String title) {
-        for (int i = 0; i < products.length; i++) {
-            if (products[i] != null) {
-                if (products[i].getTitle() == title) return true;
+        for (Product p : products) {
+            if (p != null && p.getTitle().equals(title)) {
+                return true;
             }
         }
         return false;

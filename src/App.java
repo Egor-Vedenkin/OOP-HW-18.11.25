@@ -1,3 +1,5 @@
+import org.skypro.skyshop.product.DiscountedProduct;
+import org.skypro.skyshop.product.FixPriceProduct;
 import org.skypro.skyshop.product.Product;
 import org.skypro.skyshop.basket.ProductBasket;
 import org.skypro.skyshop.product.SimpleProduct;
@@ -6,31 +8,14 @@ import org.skypro.skyshop.product.SimpleProduct;
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class App {
     public static void main(String[] args) {
-        SimpleProduct product1 = new SimpleProduct("Телефон", 3000);
-        SimpleProduct product2 = new SimpleProduct("Планшет", 5000);
-        SimpleProduct product3 = new SimpleProduct("Ноутбук", 10000);
-        SimpleProduct product4 = new SimpleProduct("Телевизор", 12500);
+        DiscountedProduct discountedPhone = new DiscountedProduct("Телефончик", 3000);
+        FixPriceProduct fixedNotebook = new FixPriceProduct("Фиксированный ноутбук");
+        SimpleProduct simpleTablet = new SimpleProduct("Обычный планшет", 5000);
 
         ProductBasket basket = new ProductBasket();
-        basket.addToCart(product1);
-        basket.addToCart(product2);
-        basket.addToCart(product3);
-        basket.addToCart(product4);
-        basket.addToCart(product1);
-        basket.addToCart(product2);
-
-        basket.showCart();
-
-        System.out.println(basket.checkProduct("Телефон"));
-        System.out.println(basket.checkProduct("Планшет"));
-
-        basket.cleanBasket();
-
-        basket.showCart();
-
-        System.out.println(basket.totalPrice());
-
-        System.out.println(basket.checkProduct("Телефон"));
+        basket.addToCart(discountedPhone);
+        basket.addToCart(fixedNotebook);
+        basket.addToCart(simpleTablet);
 
         basket.showCart();
     }

@@ -1,27 +1,43 @@
-import org.skypro.skyshop.product.DiscountedProduct;
-import org.skypro.skyshop.product.FixPriceProduct;
-import org.skypro.skyshop.product.Product;
+import org.skypro.skyshop.product.*;
 import org.skypro.skyshop.basket.ProductBasket;
-import org.skypro.skyshop.product.SimpleProduct;
+import org.skypro.skyshop.article.Article;
+import org.skypro.skyshop.search.SearchEngine;
+import org.skypro.skyshop.search.Searchable;
 
-import java.sql.SQLOutput;
-
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class App {
     public static void main(String[] args) {
-        DiscountedProduct discountedPhone = new DiscountedProduct("Телефончик", 3000);
-        FixPriceProduct fixedNotebook = new FixPriceProduct("Фиксированный ноутбук");
-        SimpleProduct simpleTablet = new SimpleProduct("Обычный планшет", 5000);
-        SimpleProduct simpleLaptop = new SimpleProduct("Обычный ноутбук", 6000);
+        // Товары
+        DiscountedProduct phone = new DiscountedProduct("Телефон", 3000);
+        FixPriceProduct notebook = new FixPriceProduct("Ноутбук");
+        SimpleProduct tablet = new SimpleProduct("Планшет", 5000);
 
+        // Статьи
+        Article article1 = new Article("Советы по выбору телефона", "Выбирайте телефон с хорошим аккумулятором!");
+        Article article2 = new Article("Что выбрать: ноутбук или планшет?", "Рассмотрите потребности перед покупкой.");
+
+        // Объект ProductBasket
         ProductBasket basket = new ProductBasket();
-        basket.addToCart(discountedPhone);
-        basket.addToCart(fixedNotebook);
-        basket.addToCart(simpleTablet);
+        basket.addToCart(phone);
+        basket.addToCart(notebook);
+        basket.addToCart(tablet);
 
+        // Объект SearchEngine
+        SearchEngine engine = new SearchEngine(8); // 5 товаров и 3 статьи
+        engine.add(phone);
+        engine.add(notebook);
+        engine.add(tablet);
+        engine.add(article1);
+        engine.add(article2);
+
+        // Проверка поиска
+        Searchable[] result = engine.search("телефон");
+        for (Searchable s : result) {
+            if (s != null) {
+                System.out.println(s.getStringRepresentation());
+            }
+        }
+
+        // Показываем содержимое корзины
         basket.showCart();
-
-        System.out.println("Привет");
     }
 }

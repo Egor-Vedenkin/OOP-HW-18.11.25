@@ -6,6 +6,9 @@ public abstract class Product implements Searchable {
     protected final String title;
 
     public Product(String title) {
+        if (title == null || title.trim().isEmpty()) {
+            throw new IllegalArgumentException("Название товара не может быть пустым или null");
+        }
         this.title = title;
     }
 

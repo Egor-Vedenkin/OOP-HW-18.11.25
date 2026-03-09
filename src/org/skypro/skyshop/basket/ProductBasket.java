@@ -1,73 +1,46 @@
 package org.skypro.skyshop.basket;
 
+import java.util.ArrayList;
+import java.util.List;
 import org.skypro.skyshop.product.Product;
 
 public class ProductBasket {
-    private Product[] products = new Product[5];
+    private List<Product> products = new ArrayList<>();
 
     public void addToCart(Product product) {
-        boolean cartIsFull = true;
-        for (int i = 0; i < products.length; i++) {
-            if (products[i] == null) {
-                cartIsFull = false;
-            }
-        }
-        if (!cartIsFull) {
-            for (int i = 0; i < products.length; i++) {
-                if (products[i] == null) {
-                    products[i] = product;
-                    break;
-                }
-            }
-        } else {
-            System.out.println("Невозможно добавить продукт");
-        }
+        products.add(product);
     }
 
     public int totalPrice() {
         int total = 0;
         for (Product p : products) {
-            if (p != null) {
-                total += p.getPrice();
-            }
+            total += p.getPrice();
         }
         return total;
     }
 
     public void showCart() {
-        boolean cartIsEmpty = true;
-        for (int i = 0; i < products.length; i++) {
-            if (products[i] != null) {
-                cartIsEmpty = false;
-                break;
-            }
-        }
-        if (!cartIsEmpty) {
+        if (products.isEmpty()) {
+            System.out.println("Корзина пуста");
+        } else {
             System.out.println("Список товаров в корзине:");
             for (Product p : products) {
-                if (p != null) {
-                    System.out.println(p.toString());
-                }
+                System.out.println(p.toString());
             }
-
-            // Подсчет специальных товаров
             int specialCount = 0;
             for (Product p : products) {
-                if (p != null && p.isSpecial()) {
+                if (p.isSpecial()) {
                     specialCount++;
                 }
             }
-
             System.out.println("Итого в корзине: " + totalPrice() + " руб.");
             System.out.println("Специальных товаров: " + specialCount);
-        } else {
-            System.out.println("Корзина пуста");
         }
     }
 
     public boolean checkProduct(String title) {
         for (Product p : products) {
-            if (p != null && p.getTitle().equals(title)) {
+            if (p.getTitle().equals(title)) {
                 return true;
             }
         }
@@ -75,10 +48,20 @@ public class ProductBasket {
     }
 
     public void cleanBasket() {
-        for (int i = 0; i < products.length; i++) {
-            if (products[i] != null) {
-                products[i] = null;
+        products.clear();
+    }
+
+    public List<Product> removeByName(String name) {
+        List<Product> removedProducts = new ArrayList<>();
+        for (int i = 0; i < products.size(); ) {
+            Product currentProduct = products.get(i);
+            if (currentProduct.getTitle().equals(name)) {
+                removedProducts.add(currentProduct);
+                products.remove(i);
+            } else {
+                i++; // Продвигаемся дальше, если товар не соответствует названию
             }
         }
+        return removedProducts;
     }
 }

@@ -5,70 +5,61 @@ import org.skypro.skyshop.search.BestResultNotFound;
 import org.skypro.skyshop.search.SearchEngine;
 import org.skypro.skyshop.search.Searchable;
 
+import java.util.List;
+
 public class App {
     public static void main(String[] args) {
-        // Товары
-        DiscountedProduct phone = new DiscountedProduct("Телефон", 3000, 10);
-        FixPriceProduct notebook = new FixPriceProduct("Ноутбук");
-        SimpleProduct tablet = new SimpleProduct("Планшет", 5000);
-
-        // Статьи
-        Article article1 = new Article("Советы по выбору телефона", "Выбирайте телефон с хорошим аккумулятором!");
-        Article article2 = new Article("Что выбрать: ноутбук или планшет?", "Рассмотрите потребности перед покупкой.");
-
-        // Объект ProductBasket
+        // Создание корзины и добавление товаров
         ProductBasket basket = new ProductBasket();
-        basket.addToCart(phone);
-        basket.addToCart(notebook);
-        basket.addToCart(tablet);
+        basket.addToCart(new SimpleProduct("Молоко", 70));
+        basket.addToCart(new SimpleProduct("Хлеб", 30));
+        basket.addToCart(new SimpleProduct("Сыр", 180));
 
-        // Объект SearchEngine
-        SearchEngine engine = new SearchEngine(8); // 5 товаров и 3 статьи
-        engine.add(phone);
-        engine.add(notebook);
-        engine.add(tablet);
-        engine.add(article1);
-        engine.add(article2);
-
-        // Проверка поиска
-        Searchable[] result = engine.search("телефон");
-        for (Searchable s : result) {
-            if (s != null) {
-                System.out.println(s.getStringRepresentation());
-            }
-        }
-
-        // Показываем содержимое корзины
+        // Демонстрация добавления и вывода корзины
+        System.out.println("\nКорзина ДО удаления:\n");
         basket.showCart();
 
-        try {
-            SimpleProduct invalidPriceProduct = new SimpleProduct("", -100);
-        } catch (IllegalArgumentException e) {
-            System.out.println(e.getMessage()); // Ожидаемый вывод: Цена должна быть больше нуля
+        // Удаление продукта по имени
+        List<Product> deletedProducts = basket.removeByName("Хлеб");
+        if (!deletedProducts.isEmpty()) {
+            System.out.println("\nУдалённые продукты:");
+            for (Product p : deletedProducts) {
+                System.out.println(p.toString());
+            }
+        } else {
+            System.out.println("\nСписок пуст.");
         }
 
-        try {
-            DiscountedProduct invalidDiscountProduct = new DiscountedProduct(null, 1000, 150);
-        } catch (IllegalArgumentException e) {
-            System.out.println(e.getMessage()); // Ожидаемый вывод: Процент скидки должен быть от 0 до 100 включительно
+        // Просмотр корзины после удаления
+        System.out.println("\nКорзина ПОСЛЕ удаления:\n");
+        basket.showCart();
+
+        // Попытка удалить несуществующий продукт
+        deletedProducts = basket.removeByName("Колбаса");
+        if (!deletedProducts.isEmpty()) {
+            System.out.println("\nУдалённые продукты:");
+            for (Product p : deletedProducts) {
+                System.out.println(p.toString());
+            }
+        } else {
+            System.out.println("\nСписок пуст.");
         }
 
-        SimpleProduct product1 = new SimpleProduct("Хлеб", 50);
-        Article article3 = new Article("Совет дня", "Ешьте фрукты каждый день");
-        Article article4 = new Article("Польза фруктов", "Фрукты полезны для здоровья");
+        // Финальная проверка состояния корзины
+        System.out.println("\nФинальное состояние корзины:\n");
+        basket.showCart();
 
-        // Добавляем объекты в SearchEngine
-        SearchEngine engine1 = new SearchEngine(5);
-        engine1.add(product1);
-        engine1.add(article3);
-        engine1.add(article4);
+        // Работа с поиском
+        SearchEngine engine = new SearchEngine();
+        engine.add(new Article("Первая статья", "Это первая тестовая статья"));
+        engine.add(new Article("Вторая статья", "Эта вторая статья тоже важна"));
+        engine.add(new SimpleProduct("Простой продукт", 100));
 
-        // Успешный поиск
-        try {
-            Searchable match = engine1.findBestMatch("фрукты");
-            System.out.println(match.getStringRepresentation());
-        } catch (BestResultNotFound e) {
-            System.out.println(e.getMessage());
+        // Поиск статей
+        List<Searchable> result = engine.search("статья");
+        System.out.println("\nРезультаты поиска:");
+        for (Searchable r : result) {
+            System.out.println(r.getStringRepresentation());
         }
     }
 }

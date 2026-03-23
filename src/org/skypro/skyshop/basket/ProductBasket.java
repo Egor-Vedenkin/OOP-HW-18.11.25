@@ -1,67 +1,44 @@
 package org.skypro.skyshop.basket;
 
-import java.util.ArrayList;
-import java.util.List;
 import org.skypro.skyshop.product.Product;
+import java.util.*;
 
 public class ProductBasket {
-    private List<Product> products = new ArrayList<>();
+    private Map<String, List<Product>> basket = new HashMap<>();
 
     public void addToCart(Product product) {
-        products.add(product);
+        String name = product.getTitle();
+        basket.computeIfAbsent(name, k -> new ArrayList<>()).add(product);
     }
 
     public int totalPrice() {
         int total = 0;
-        for (Product p : products) {
-            total += p.getPrice();
+        for (List<Product> products : basket.values()) {
+            for (Product p : products) {
+                total += p.getPrice();
+            }
         }
         return total;
     }
 
     public void showCart() {
-        if (products.isEmpty()) {
+        if (basket.isEmpty()) {
             System.out.println("Корзина пуста");
-        } else {
-            System.out.println("Список товаров в корзине:");
+            return;
+        }
+        System.out.println("Список товаров в корзине:");
+        for (List<Product> products : basket.values()) {
             for (Product p : products) {
                 System.out.println(p.toString());
             }
-            int specialCount = 0;
-            for (Product p : products) {
-                if (p.isSpecial()) {
-                    specialCount++;
-                }
-            }
-            System.out.println("Итого в корзине: " + totalPrice() + " руб.");
-            System.out.println("Специальных товаров: " + specialCount);
         }
     }
 
     public boolean checkProduct(String title) {
-        for (Product p : products) {
-            if (p.getTitle().equals(title)) {
-                return true;
-            }
-        }
-        return false;
+        return basket.containsKey(title);
     }
 
     public void cleanBasket() {
-        products.clear();
-    }
-
-    public List<Product> removeByName(String name) {
-        List<Product> removedProducts = new ArrayList<>();
-        for (int i = 0; i < products.size(); ) {
-            Product currentProduct = products.get(i);
-            if (currentProduct.getTitle().equals(name)) {
-                removedProducts.add(currentProduct);
-                products.remove(i);
-            } else {
-                i++; // Продвигаемся дальше, если товар не соответствует названию
-            }
-        }
-        return removedProducts;
+        basket.clear();
     }
 }

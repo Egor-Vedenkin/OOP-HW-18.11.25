@@ -5,61 +5,41 @@ import org.skypro.skyshop.search.BestResultNotFound;
 import org.skypro.skyshop.search.SearchEngine;
 import org.skypro.skyshop.search.Searchable;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 public class App {
     public static void main(String[] args) {
-        // Создание корзины и добавление товаров
         ProductBasket basket = new ProductBasket();
-        basket.addToCart(new SimpleProduct("Молоко", 70));
-        basket.addToCart(new SimpleProduct("Хлеб", 30));
-        basket.addToCart(new SimpleProduct("Сыр", 180));
 
-        // Демонстрация добавления и вывода корзины
-        System.out.println("\nКорзина ДО удаления:\n");
+        basket.addToCart(new SimpleProduct("Хлеб", 50));
+        basket.addToCart(new DiscountedProduct("Молоко", 100, 10));
+        basket.addToCart(new SimpleProduct("Сыр", 150));
+        basket.addToCart(new DiscountedProduct("Колбаса", 200, 15));
+
+        System.out.println("\nПоказ корзины:");
         basket.showCart();
 
-        // Удаление продукта по имени
-        List<Product> deletedProducts = basket.removeByName("Хлеб");
-        if (!deletedProducts.isEmpty()) {
-            System.out.println("\nУдалённые продукты:");
-            for (Product p : deletedProducts) {
-                System.out.println(p.toString());
-            }
-        } else {
-            System.out.println("\nСписок пуст.");
-        }
+        System.out.println("\nЕсть ли 'Хлеб' в корзине?: " + basket.checkProduct("Хлеб"));
 
-        // Просмотр корзины после удаления
-        System.out.println("\nКорзина ПОСЛЕ удаления:\n");
+        System.out.println("\nОбщая сумма в корзине: " + basket.totalPrice() + " рублей");
+
+        basket.cleanBasket();
+        System.out.println("\nКорзина очищена. Текущее состояние корзины:");
         basket.showCart();
 
-        // Попытка удалить несуществующий продукт
-        deletedProducts = basket.removeByName("Колбаса");
-        if (!deletedProducts.isEmpty()) {
-            System.out.println("\nУдалённые продукты:");
-            for (Product p : deletedProducts) {
-                System.out.println(p.toString());
-            }
-        } else {
-            System.out.println("\nСписок пуст.");
-        }
+        Article article1 = new Article("JavaScript основы", "Здесь рассказывается о JS...");
+        Article article2 = new Article("Основы Java", "Изучаем основы программирования на Java...");
 
-        // Финальная проверка состояния корзины
-        System.out.println("\nФинальное состояние корзины:\n");
-        basket.showCart();
-
-        // Работа с поиском
         SearchEngine engine = new SearchEngine();
-        engine.add(new Article("Первая статья", "Это первая тестовая статья"));
-        engine.add(new Article("Вторая статья", "Эта вторая статья тоже важна"));
-        engine.add(new SimpleProduct("Простой продукт", 100));
+        engine.add(article1);
+        engine.add(article2);
 
-        // Поиск статей
-        List<Searchable> result = engine.search("статья");
-        System.out.println("\nРезультаты поиска:");
-        for (Searchable r : result) {
-            System.out.println(r.getStringRepresentation());
+        System.out.println("\nРезультат поиска:");
+        Map<String, Searchable> results = engine.search("основы");
+        for (String key : results.keySet()) {
+            System.out.println(key + ": " + results.get(key).getStringRepresentation());
         }
     }
 }

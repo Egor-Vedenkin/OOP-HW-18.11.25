@@ -41,8 +41,6 @@ public class Article implements Searchable {
 
     @Override
     public String toString() {
-        return "Статья:\n" +
-                "Название: " + title + "\n" +
-                "Текст: " + text;
+        return "Статья:";
     }
 }

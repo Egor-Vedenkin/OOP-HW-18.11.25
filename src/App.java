@@ -25,18 +25,16 @@ public class App {
 
         SearchEngine engine = new SearchEngine();
 
-        // Добавляем статьи и продукты в поисковый движок (дубликаты не добавятся)
         engine.add(article1);
         engine.add(article2);
-        engine.add(new SimpleProduct("Хлеб", 50)); // Дубликат не добавится, если уже есть продукт с таким именем
+        engine.add(new SimpleProduct("Хлеб", 50)); // Дубликат не добавится
 
         System.out.println("\nРезультат поиска:");
 
-        // Выводим результаты поиска из отсортированного Set'а
         Set<Searchable> results = engine.search("основы");
-        for (Searchable item : results) {
+        results.forEach(item -> {
             System.out.println(item.getName() + ": " + item.getStringRepresentation());
             System.out.println("---");
-        }
+        });
     }
 }

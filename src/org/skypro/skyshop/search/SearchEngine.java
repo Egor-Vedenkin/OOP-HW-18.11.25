@@ -1,12 +1,14 @@
 package org.skypro.skyshop.search;
 
 import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class SearchEngine {
-    private List<Searchable> items = new ArrayList<>();
+    private Set<Searchable> items = new HashSet<>();
 
     public void add(Searchable item) {
-        items.add(item);
+        items.add(item); // HashSet не допускает дубликатов, если equals/hashCode реализованы по имени
     }
 
     public Searchable findBestMatch(String search) throws BestResultNotFound {
@@ -40,15 +42,15 @@ public class SearchEngine {
         return count;
     }
 
-    public Map<String, Searchable> search(String keyword) {
-        Map<String, Searchable> resultMap = new TreeMap<>();
+    // Возвращает отсортированный Set по длине имени (убыв.), затем по алфавиту (возр.)
+    public Set<Searchable> search(String keyword) {
+        Comparator<Searchable> comparator = Comparator.comparingInt((Searchable s) -> -s.getName().length())
+                .thenComparing(Searchable::getName);
 
-        for (Searchable s : items) {
-            if (s != null && s.getSearchTerm().toLowerCase().contains(keyword.toLowerCase())) {
-                resultMap.put(s.getName(), s);
-            }
-        }
+        TreeSet<Searchable> resultSet = items.stream()
+                .filter(s -> s != null && s.getSearchTerm().toLowerCase().contains(keyword.toLowerCase()))
+                .collect(Collectors.toCollection(() -> new TreeSet<>(comparator)));
 
-        return resultMap;
+        return resultSet;
     }
 }

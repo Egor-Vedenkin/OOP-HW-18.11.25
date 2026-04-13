@@ -23,7 +23,7 @@ public class App {
         basket.addToCart(tablet);
 
         // Объект SearchEngine
-        SearchEngine engine = new SearchEngine(8); // 5 товаров и 3 статьи
+        SearchEngine engine = new SearchEngine(8);
         engine.add(phone);
         engine.add(notebook);
         engine.add(tablet);
@@ -41,32 +41,38 @@ public class App {
         // Показываем содержимое корзины
         basket.showCart();
 
+        // Демонстрация ошибок при создании товаров
         try {
             SimpleProduct invalidPriceProduct = new SimpleProduct("", -100);
         } catch (IllegalArgumentException e) {
-            System.out.println(e.getMessage()); // Ожидаемый вывод: Цена должна быть больше нуля
+            System.out.println(e.getMessage());
         }
 
         try {
             DiscountedProduct invalidDiscountProduct = new DiscountedProduct(null, 1000, 150);
         } catch (IllegalArgumentException e) {
-            System.out.println(e.getMessage()); // Ожидаемый вывод: Процент скидки должен быть от 0 до 100 включительно
+            System.out.println(e.getMessage());
         }
 
+        // Поиск лучшего совпадения с обработкой исключения BestResultNotFound
         SimpleProduct product1 = new SimpleProduct("Хлеб", 50);
         Article article3 = new Article("Совет дня", "Ешьте фрукты каждый день");
         Article article4 = new Article("Польза фруктов", "Фрукты полезны для здоровья");
 
-        // Добавляем объекты в SearchEngine
         SearchEngine engine1 = new SearchEngine(5);
         engine1.add(product1);
         engine1.add(article3);
         engine1.add(article4);
 
-        // Успешный поиск
+        // Успешный поиск с обработкой исключения BestResultNotFound:
         try {
             Searchable match = engine1.findBestMatch("фрукты");
             System.out.println(match.getStringRepresentation());
+            // Неуспешный поиск:
+            match = engine1.findBestMatch("спорт");
+            System.out.println(match.getStringRepresentation());
+            // Этот код не выполнится, так как будет выброшено исключение:
+            System.out.println("Этот текст не выведется при отсутствии совпадений.");
         } catch (BestResultNotFound e) {
             System.out.println(e.getMessage());
         }

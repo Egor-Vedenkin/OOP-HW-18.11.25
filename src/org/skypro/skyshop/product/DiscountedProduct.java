@@ -1,9 +1,8 @@
 package org.skypro.skyshop.product;
 
 public class DiscountedProduct extends Product {
+    private final int basePrice;
     private final int discountPercent;
-    private int basePrice;
-    private int salePrice;
 
     public DiscountedProduct(String title, int price, int discountPercent) {
         super(title);
@@ -15,26 +14,21 @@ public class DiscountedProduct extends Product {
         }
         this.basePrice = price;
         this.discountPercent = discountPercent;
-        calculateSalePrice();
-    }
-
-    private void calculateSalePrice() {
-        salePrice = (int) (basePrice * 0.9); // скидка 10%
     }
 
     @Override
     public int getPrice() {
-        return salePrice;
+        // Динамический расчёт цены с учётом скидки
+        return basePrice - (basePrice * discountPercent / 100);
     }
 
     @Override
-    public boolean isSpecial() { // Спецпродукт
+    public boolean isSpecial() {
         return true;
     }
 
     @Override
     public String toString() {
-        double discountPercentage = ((double)(basePrice - salePrice)) / basePrice * 100;
-        return getTitle() + ": " + salePrice + " (" + Math.round(discountPercentage) + "%)";
+        return getTitle() + ": " + getPrice() + " (" + discountPercent + "% скидка)";
     }
 }
